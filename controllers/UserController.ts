@@ -2,21 +2,40 @@ import {Request, Response, Express} from "express";
 import UserDao from "../daos/UserDao";
 import UserControllerI from "../interfaces/UserControllerI";
 
+/**
+ * @class UserController Implements RESTful Web service API for users resource.
+ * Defines the following HTTP endpoints:
+ * <ul>
+ *     <li>POST /api/users to create a new user instance</li>
+ *     <li>GET /api/users to retrieve all the user instances</li>
+ *     <li>GET /api/users/:uid to retrieve an individual user instance </li>
+ *     <li>PUT /api/users to modify an individual user instance </li>
+ *     <li>DELETE /api/users/:uid to remove a particular user instance</li>
+ * </ul>
+ * @property {UserDao} userDao Singleton DAO implementing user CRUD operations
+ * @property {UserController} userController Singleton controller implementing
+ * RESTful Web service API
+ */
 export default class UserController implements UserControllerI {
    app: Express;
    userDao: UserDao = UserDao.getInstance();
 
    private static userController: UserController | null = null;
 
+   /**
+    * Return a singleton instance of this controller.
+    * @param app instance of the express server.
+    * @returns instance of this class.
+    */
    public static getInstance(app: Express): UserController {
         if(UserController.userController === null) {
             UserController.userController = new UserController();
             //this.app = app;
-            app.get('/users', UserController.userController.findAllUsers);
-            app.get('/users/:userid', UserController.userController.findUserById);
-            app.post('/users', UserController.userController.createUser);
-            app.delete('/users/:userid', UserController.userController.deleteUser);
-            app.put('/users/:userid', UserController.userController.updateUser);
+            app.get('/api/users', UserController.userController.findAllUsers);
+            app.get('/api/users/:userid', UserController.userController.findUserById);
+            app.post('/api/users', UserController.userController.createUser);
+            app.delete('/api/users/:userid', UserController.userController.deleteUser);
+            app.put('/api/users/:userid', UserController.userController.updateUser);
         }
         return UserController.userController;
    }
@@ -33,18 +52,49 @@ export default class UserController implements UserControllerI {
 //        this.app.delete('/users/:userid', this.deleteUser);
 //        this.app.put('/users/:userid', this.updateUser);
 //    }
+
+   /**
+    * Return all users.
+    * @param req Get request to return all users.
+    * @param res Response element to capture all users.
+    * @returns List of users as JSON.
+    */
    findAllUsers = (req: Request, res: Response) =>
        this.userDao.findAllUsers()
            .then(users => res.json(users));
+    /**
+    * Return user by id.
+    * @param req Get request to return specific user.
+    * @param res Response element to capture the user.
+    * @returns user object as JSON.
+    */
    findUserById = (req: Request, res: Response) =>
        this.userDao.findUserById(req.params.userid)
            .then(user => res.json(user));
+   /**
+    * Create a new user.
+    * @param req POST request to create a new user.
+    * @param res Response element to capture new user details.
+    * @returns user as JSON.
+    */
    createUser = (req: Request, res: Response) =>
        this.userDao.createUser(req.body)
            .then(user => res.json(user));
+   /**
+    * Delete a user.
+    * @param req DELETE request to delete a user.
+    * @param res Delete status.
+    * @returns The status of the operation.
+    */
    deleteUser = (req: Request, res: Response) =>
        this.userDao.deleteUser(req.params.userid)
            .then(status => res.json(status));
+   /**
+    * Update the details of a user.
+    * @param req PUT request to update a user.
+    * @param res User update details.
+    * @returns updated user object as JSON.
+    */
    updateUser = (req: Request, res: Response) =>
        this.userDao.updateUser(req.params.userid, req.body)
            .then(status => res.json(status));

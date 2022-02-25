@@ -1,3 +1,7 @@
+/**
+ * @file Implements the app server with all DAO and controller instances
+ */
+
 import express, {Request, Response} from 'express';
 import mongoose, { Mongoose } from 'mongoose';
 //mongoose.connect('mongodb://localhost:27017/tuiter', function(error){
@@ -11,6 +15,10 @@ mongoose.connect('mongodb+srv://admin:IeEAddMqsyWTdC3s@tuitercluster.szy5h.mongo
 import bodyParser from "body-parser";
 import UserController from "./controllers/UserController";
 import TuitController from "./controllers/TuitController";
+import LikeController from "./controllers/LikeController";
+import BookmarkController from "./controllers/BookmarkController";
+import FollowsController from "./controllers/FollowsController";
+import MessageController from "./controllers/MessageController";
 import UserDao from './daos/UserDao';
 import TuitDao from './daos/TuitDao';
 const app = express();
@@ -31,6 +39,10 @@ app.get('/add/:a/:b', (req: Request, res: Response) =>
 
 const userController = UserController.getInstance(app);
 const tuitController = TuitController.getInstance(app);
+const likeController = LikeController.getInstance(app);
+const bookmarkController = BookmarkController.getInstance(app);
+const messageController = MessageController.getInstance(app);
+const followsController = FollowsController.getInstance(app);
 
 const PORT = 4000;
 app.listen(process.env.PORT || PORT);
