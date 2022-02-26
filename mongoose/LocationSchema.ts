@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 /**
- * Model for Location.
+ * Schema for Location.
  */
 const LocationSchema = new mongoose.Schema({
 

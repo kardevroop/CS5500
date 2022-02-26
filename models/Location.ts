@@ -1,5 +1,5 @@
 /**
- * Class to hold coordinates of a location.
+ * @class Class to hold coordinates of a location.
  */
 export default class Location {
     public latitude: number = 0.0;

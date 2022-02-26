@@ -1,7 +1,7 @@
 import User from "./User";
 
 /**
- * Intermediate class to hold relationship between a user 
+ * @class Intermediate class to hold relationship between a user 
  * and the users being followed by it.
  */
 export default class User2Followers {

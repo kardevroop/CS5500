@@ -1,7 +1,7 @@
 import User from "./User";
 
 /**
- * Class to represent an Message.
+ * @class Class to represent an Message.
  */
 export default class Message {
    private message: string = '';

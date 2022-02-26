@@ -57,8 +57,8 @@ export default class TuitController implements TuitControllerI {
 
    /**
     * Return all tuits.
-    * @param req Get request to return all posted tuits.
-    * @param res Response element to capture all tuits.
+    * @param {Request} req Get request to return all posted tuits.
+    * @param {Response} res Response element to capture all tuits.
     * @returns List of tuits as JSON.
     */
    findAllTuits = (req: Request, res: Response) =>
@@ -67,8 +67,8 @@ export default class TuitController implements TuitControllerI {
 
     /**
      * Return a tuit based on Id.
-     * @param req GET request based on Id.
-     * @param res Response object to capture the returned Id.
+     * @param {Request}req GET request based on Id.
+     * @param {Response} res Response object to capture the returned Id.
      * @returns The concerned tuit.
      */
    findTuitById = (req: Request, res: Response) =>
@@ -76,8 +76,8 @@ export default class TuitController implements TuitControllerI {
            .then(tuit => res.json(tuit));
     /**
      * Return a tuit based on Id.
-     * @param req GET request based on Id.
-     * @param res Response object to capture the returned Id.
+     * @param {Request} req GET request based on Id.
+     * @param {Response} res Response object to capture the returned Id.
      * @returns The concerned tuit.
      */
    findTuitsByUser = (req: Request, res: Response) =>
@@ -85,8 +85,8 @@ export default class TuitController implements TuitControllerI {
            .then(tuits => res.json(tuits));
     /**
      * Create a new tuit.
-     * @param req POST request to create new tuit.
-     * @param res Response object to capture the new tuit.
+     * @param {Request} req POST request to create new tuit.
+     * @param {Response} res Response object to capture the new tuit.
      * @returns The tuit.
      */
    createTuit = (req: Request, res: Response) =>
@@ -94,8 +94,8 @@ export default class TuitController implements TuitControllerI {
            .then(tuit => res.json(tuit));
     /**
      * Delete a tuit based on Id.
-     * @param req DELETE request based on Id.
-     * @param res Response object to capture the returned JSON.
+     * @param {Request} req DELETE request based on Id.
+     * @param {Response} res Response object to capture the returned JSON.
      * @returns 
      */
    deleteTuit = (req: Request, res: Response) =>
@@ -103,8 +103,8 @@ export default class TuitController implements TuitControllerI {
            .then(status => res.json(status));
     /**
      * Update a tuit based on Id.
-     * @param req PUT request based on Id.
-     * @param res Response object to capture the updated tuit.
+     * @param {Request} req PUT request based on Id.
+     * @param {Response} res Response object to capture the updated tuit.
      * @returns The concerned tuit.
      */
    updateTuit = (req: Request, res: Response) =>

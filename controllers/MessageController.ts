@@ -1,12 +1,12 @@
 /**
- * @file Controller RESTful Web service API for likes resource
+ * @file Controller RESTful Web service API for messages resource
  */
  import {Express, Request, Response} from "express";
  import MessageDao from "../daos/MessageDao";
  import MessageControllerI from "../interfaces/MessageControllerI";
  
  /**
-  * @class MessageController Implements RESTful Web service API for likes resource.
+  * @class MessageController Implements RESTful Web service API for messages resource.
   * Defines the following HTTP endpoints:
   * <ul>
   *     <li>POST /api/users/messages/send to send a message between users
@@ -52,56 +52,55 @@
      private constructor() {}
  
      /**
-      * Retrieves all users that liked a tuit from the database
-      * @param {Request} req Represents request from client, including the path
-      * parameter tid representing the liked tuit
+      * Creates a message between two users
+      * @param {Request} req Represents request from client, including the body
+      * of the message object containing sender and receiver details
       * @param {Response} res Represents response to client, including the
-      * body formatted as JSON arrays containing the user objects
+      * body formatted as JSON containing the message objects
       */
       sendMessage = (req: Request, res: Response) =>
      MessageController.messageDao.sendMessage(req.body)
              .then(msg => res.send(msg));
  
      /**
-      * Retrieves all tuits liked by a user from the database
+      * Retrieves all messages sent by a user from the database
       * @param {Request} req Represents request from client, including the path
-      * parameter uid representing the user liked the tuits
+      * parameter uid representing the user 
       * @param {Response} res Represents response to client, including the
-      * body formatted as JSON arrays containing the tuit objects that were liked
+      * body formatted as JSON arrays containing the messages objects
       */
       viewAllSentMessages = (req: Request, res: Response) =>
      MessageController.messageDao.viewAllSentMessages(req.params.uid)
              .then(likes => res.json(likes));
  
      /**
+      * Retrieves all messages received by a user from the database
       * @param {Request} req Represents request from client, including the
-      * path parameters uid and tid representing the user that is liking the tuit
-      * and the tuit being liked
+      * path parameters uid the user 
       * @param {Response} res Represents response to client, including the
-      * body formatted as JSON containing the new likes that was inserted in the
-      * database
+      * body formatted as JSON arrays containing the messages objects
       */
       viewAllReceivedMesssages = (req: Request, res: Response) =>
      MessageController.messageDao.viewAllReceivedMesssages(req.params.uid)
              .then(likes => res.json(likes));
 
-         /**
-      * @param {Request} req Represents request from client, including the
-      * path parameters uid and tid representing the user that is unliking
-      * the tuit and the tuit being unliked
-      * @param {Response} res Represents response to client, including status
-      * on whether deleting the like was successful or not
-      */
+        /**
+         * Retrieves all messages received by a user from a  certain user from the database
+        * @param {Request} req Represents request from client, including the
+        * path parameters uid and fromUid representing the user who received messages
+        * and the user who sent the messages respectively.
+        * @param {Response} res Represents response to client, including the body formatted as
+        * JSON arrays containing the messages objects
+        */
         viewAllMessageFromSingleUser = (req: Request, res: Response) =>
           MessageController.messageDao.viewAllMessageFromSingleUser(req.params.uid, req.params.fromUid)
                   .then(status => res.json(status));
 
          /**
       * @param {Request} req Represents request from client, including the
-      * path parameters uid and tid representing the user that is unliking
-      * the tuit and the tuit being unliked
+      * path parameter mid representing the message to be deleted
       * @param {Response} res Represents response to client, including status
-      * on whether deleting the like was successful or not
+      * on whether deleting the message was successful or not
       */
     deleteMessage = (req: Request, res: Response) =>
           MessageController.messageDao.deleteMessage(req.params.mid)
@@ -109,10 +108,10 @@
 
              /**
       * @param {Request} req Represents request from client, including the
-      * path parameters uid and tid representing the user that is unliking
-      * the tuit and the tuit being unliked
+      * path parameters mid representing the message to be edited and the body
+      * of the new message
       * @param {Response} res Represents response to client, including status
-      * on whether deleting the like was successful or not
+      * on whether editing the message was successful or not
       */
     editMessage = (req: Request, res: Response) =>
       MessageController.messageDao.editMessage(req.params.mid, req.body)

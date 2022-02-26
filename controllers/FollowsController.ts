@@ -1,19 +1,26 @@
+/**
+ * @file Controller RESTful Web service API for follows resource
+ */
 import {Request, Response, Express} from "express";
 import UserDao from "../daos/UserDao";
 import FollowsDao from "../daos/FollowsDao";
 import FollowsControllerI from "../interfaces/FollowsControllerI";
 
  /**
-  * @class FollowsController Implements RESTful Web service API for likes resource.
+  * @class FollowsController Implements RESTful Web service API for follows resource.
   * Defines the following HTTP endpoints:
   * <ul>
   *     <li>POST /api/users/:uid/follow/:fuid allows a user to follow another
   *     </li>
   *     <li>DELTE /api/users/:uid/unfollow/:fuid allows a user to not follow another anymore 
   *     </li>
-  *     <li>GET api/users/:uid/following returns all users one is following
+  *     <li>GET /api/users/:uid/following returns all users one is following
   *     </li>
-  *     <li>GET api/users/:uid/followers returns all user following one
+  *     <li>GET /api/users/:uid/followers returns all user following one
+  *     </li>
+  *     <li>POST /api/users/:uid/follow/topic/:topicid allows a user to follow a specific topic
+  *     </li>
+  *     <li>GET /api/topic/:topicid/following returns all user following the mentioned topic
   *     </li>
   * </ul>
   * @property {FollowsDao} followsDao Singleton DAO implementing likes CRUD operations
@@ -57,56 +64,57 @@ export default class FollowsController implements FollowsControllerI {
 //    }
 
    /**
-    * Return all tuits.
-    * @param req Get request to return all posted tuits.
-    * @param res Response element to capture all tuits.
-    * @returns List of tuits as JSON.
+    * Allows a user to follow another.
+    * @param {Request} req POST request to allow a user to follow another.
+    * @param {Reponse}res Response element to capture the response.
+    * @returns Promise to the created relationship.
     */
     follow = (req: Request, res: Response) =>
        this.followsDao.follow(req.params.uid, req.params.fuid)
            .then(follows => res.json(follows));
 
     /**
-     * Return a tuit based on Id.
-     * @param req GET request based on Id.
-     * @param res Response object to capture the returned Id.
-     * @returns The concerned tuit.
+     * Allows a user to unfollow another user.
+     * @param {Request} req DELETE request based on user id and the followed user id.
+     * @param {Response} res Response object to capture the delete status.
+     * @returns Promise to The delete status.
      */
      unfollow = (req: Request, res: Response) =>
        this.followsDao.unfollow(req.params.uid, req.params.fuid)
            .then(tuit => res.send(tuit));
     /**
-     * Return a tuit based on Id.
-     * @param req GET request based on Id.
-     * @param res Response object to capture the returned Id.
-     * @returns The concerned tuit.
+     * Return a list of users followed by a user based on Id.
+     * @param {Request} req GET request based on Id.
+     * @param {Response} res Response object to capture the list of users.
+     * @returns Promise to a list of users.
      */
      findFollowingList = (req: Request, res: Response) =>
        this.followsDao.findFollowingList(req.params.uid)
            .then(tuits => res.json(tuits));
     /**
-     * Create a new tuit.
-     * @param req POST request to create new tuit.
-     * @param res Response object to capture the new tuit.
-     * @returns The tuit.
+     * Return the list of users followinf this user based on Id.
+     * @param {Request} req GET request to create new tuit.
+     * @param {Reponse} res Response object to capture the list of userrs.
+     * @returns Promise to The list of users.
      */
      findFollowedBy = (req: Request, res: Response) =>
        this.followsDao.findFollowedBy(req.params.uid)
            .then(tuit => res.json(tuit));
-        /**
-     * Create a new tuit.
-     * @param req POST request to create new tuit.
-     * @param res Response object to capture the new tuit.
-     * @returns The tuit.
+    /**
+     * allow a user to follow a topic.
+     * @param {Request} req POST request to create relationship.
+     * @param {Response} res Response object to capture the new object.
+     * @returns Promise to the created object.
      */
       followTopic = (req: Request, res: Response) =>
          this.followsDao.followTopic(req.params.uid, req.params.topicid)
              .then(follow => res.json(follow));
-          /**
-     * Create a new tuit.
-     * @param req POST request to create new tuit.
-     * @param res Response object to capture the new tuit.
-     * @returns The tuit.
+
+    /**
+     * Allows a user to search for other users following the same topic.
+     * @param {Request} req GET request to return the list users following the same topic.
+     * @param {Response} res Response object to capture the list.
+     * @returns Promise to the list of users.
      */
       findUsersFollowingSameTopic = (req: Request, res: Response) =>
      this.followsDao.findUsersFollowingSameTopic(req.params.topicid)

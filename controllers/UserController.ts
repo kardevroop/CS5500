@@ -55,8 +55,8 @@ export default class UserController implements UserControllerI {
 
    /**
     * Return all users.
-    * @param req Get request to return all users.
-    * @param res Response element to capture all users.
+    * @param {Request} req Get request to return all users.
+    * @param {Response} res Response element to capture all users.
     * @returns List of users as JSON.
     */
    findAllUsers = (req: Request, res: Response) =>
@@ -64,8 +64,8 @@ export default class UserController implements UserControllerI {
            .then(users => res.json(users));
     /**
     * Return user by id.
-    * @param req Get request to return specific user.
-    * @param res Response element to capture the user.
+    * @param {Request} req Get request to return specific user.
+    * @param {Response} res Response element to capture the user.
     * @returns user object as JSON.
     */
    findUserById = (req: Request, res: Response) =>
@@ -73,8 +73,8 @@ export default class UserController implements UserControllerI {
            .then(user => res.json(user));
    /**
     * Create a new user.
-    * @param req POST request to create a new user.
-    * @param res Response element to capture new user details.
+    * @param {Request} req POST request to create a new user.
+    * @param {Response} res Response element to capture new user details.
     * @returns user as JSON.
     */
    createUser = (req: Request, res: Response) =>
@@ -82,8 +82,8 @@ export default class UserController implements UserControllerI {
            .then(user => res.json(user));
    /**
     * Delete a user.
-    * @param req DELETE request to delete a user.
-    * @param res Delete status.
+    * @param {Request} req DELETE request to delete a user.
+    * @param {Response} res Delete status.
     * @returns The status of the operation.
     */
    deleteUser = (req: Request, res: Response) =>
@@ -91,8 +91,8 @@ export default class UserController implements UserControllerI {
            .then(status => res.json(status));
    /**
     * Update the details of a user.
-    * @param req PUT request to update a user.
-    * @param res User update details.
+    * @param {Request} req PUT request to update a user.
+    * @param {Response} res User update details.
     * @returns updated user object as JSON.
     */
    updateUser = (req: Request, res: Response) =>

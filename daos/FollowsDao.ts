@@ -30,7 +30,7 @@ export default class FollowsDao implements FollowsDaoI {
      * Follow another user
      * @param uid The user who follows
      * @param fuid The user being followed
-     * @returns The status of creation
+     * @returns The status of creation as a promise
      */
     follow = async (uid: string, fuid: string): Promise<any> => 
         FollowingModel.create({profile: uid, following: fuid}).then(res => {
@@ -41,7 +41,7 @@ export default class FollowsDao implements FollowsDaoI {
      * Unfollow a user
      * @param uid The user following
      * @param fuid The user being followed
-     * @returns The deletion status
+     * @returns The deletion status as a promise
      */
     unfollow = async (uid: string, fuid: string): Promise<any> =>
         FollowingModel.deleteOne({profile: uid, following: fuid}).then(() => {
@@ -51,7 +51,7 @@ export default class FollowsDao implements FollowsDaoI {
     /**
      * Retrievs a list of users being followed by this user
      * @param uid The user id
-     * @returns list of users
+     * @returns list of users as a promise
      */
     findFollowingList = async (uid: string): Promise<User[]> =>
         FollowingModel
@@ -62,14 +62,25 @@ export default class FollowsDao implements FollowsDaoI {
     /**
      * Retrieves list of user following this user
      * @param uid the user id
-     * @returns list of users
+     * @returns list of users as a promise
      */
     findFollowedBy = async (uid: string): Promise<User[]> =>
         FollowedByModel.find({profile: uid}).select({followedBy: 1}).populate("followedBy");
 
+    /**
+     * Allows a user to follow a topic
+     * @param uid the user id
+     * @param topicid the topic id
+     * @returns the newly created relationship as a promise
+     */
     followTopic = async (uid: string, topicid: string): Promise<any> =>
         FollowingTopicModel.create({profile: uid, following: topicid})
 
+    /**
+     * Retrieves list of user following the same topic as this user
+     * @param topicid the topic id
+     * @returns list of users as a promise
+     */
     findUsersFollowingSameTopic = async (topicid: string): Promise<User[]> =>
         FollowingTopicModel
         .find({following: topicid})

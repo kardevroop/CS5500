@@ -2,6 +2,9 @@ import mongoose, {Schema} from "mongoose";
 import Message from "../models/Message";
 import User from "../models/User";
 
+/**
+ * Schema for a message between users
+ */
 const MessageSchema = new mongoose.Schema<Message>({
     message: {type: String, default: ""},
     to: {type: Schema.Types.ObjectId, ref: "UserModel"},

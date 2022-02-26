@@ -1,12 +1,12 @@
 /**
- * @file Controller RESTful Web service API for likes resource
+ * @file Controller RESTful Web service API for bookmarks resource
  */
  import {Express, Request, Response} from "express";
  import BookmarkDao from "../daos/BookmarkDao";
  import BookmarkControllerI from "../interfaces/BookmarkControllerI";
  
  /**
-  * @class BookmarkController Implements RESTful Web service API for likes resource.
+  * @class BookmarkController Implements RESTful Web service API for bookmarks resource.
   * Defines the following HTTP endpoints:
   * <ul>
   *     <li>POST /api/users/:uid/bookmarks/:tid creates a bookmark of a tuit for a user
@@ -50,9 +50,10 @@
      /**
       * Bookmarks a tuit for a user
       * @param {Request} req Represents request from client, including the path
-      * parameter tid representing the liked tuit
+      * parameter uid representing the user who bookmarked the tuit and 
+      * tid representing the bookmarked tuit
       * @param {Response} res Represents response to client, including the
-      * body formatted as JSON arrays containing the user objects
+      * body formatted as JSON arrays containing the bookmark objects
       */
       userBookmarksTuit = (req: Request, res: Response) =>
         BookmarkController.bookmarkDao.userBookmarksTuit(req.params.uid, req.params.tid)
@@ -61,7 +62,8 @@
      /**
       * Removes a tuit from the bookmark list
       * @param {Request} req Represents request from client, including the path
-      * parameter uid representing the user liked the tuits
+      * parameter uid representing the user who bookmarked the tuit and 
+      * tid representing the bookmarked tuit
       * @param {Response} res Represents response to client, including the
       * body formatted as JSON arrays containing the tuit objects that were liked
       */
@@ -72,8 +74,7 @@
      /**
       * Retrieves list of all tuits bookmarked by a user
       * @param {Request} req Represents request from client, including the
-      * path parameters uid and tid representing the user that is liking the tuit
-      * and the tuit being liked
+      * path parameter uid representing the user that bookmarked the tuits
       * @param {Response} res Represents response to client, including the
       * body formatted as JSON containing the new likes that was inserted in the
       * database
@@ -85,8 +86,7 @@
      /**
       * Creates a bookmark under a folder
       * @param {Request} req Represents request from client, including the
-      * path parameters uid and tid representing the user that is unliking
-      * the tuit and the tuit being unliked
+      * body containing bookmark information
       * @param {Response} res Represents response to client, including status
       * on whether deleting the like was successful or not
       */
@@ -97,8 +97,8 @@
     /**
      * Moves a bookmark to another folder
       * @param {Request} req Represents request from client, including the
-      * path parameters uid and tid representing the user that is unliking
-      * the tuit and the tuit being unliked
+      * path parameter bid representing the bookmarked tuit and the body
+      * containing the new location for the bookmark
       * @param {Response} res Represents response to client, including status
       * on whether deleting the like was successful or not
       */

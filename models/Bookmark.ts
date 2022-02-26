@@ -2,7 +2,7 @@ import Tuit from "./Tuit";
 import User from "./User";
 
 /**
- * Class to represent an user.
+ * @class Class to represent a bookmark.
  */
 export default class Bookmark {
    private bookmarkedTuit: Tuit ;

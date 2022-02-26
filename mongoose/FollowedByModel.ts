@@ -7,7 +7,7 @@ import mongoose from "mongoose";
 import FollowedBySchema from "./FollowedBySchema";
 
 /**
- * Model based on user schema.
+ * Model based on followed By schema.
  */
 const FollowedByModel = mongoose.model('FollowedByModel', FollowedBySchema);
 export default FollowedByModel;
