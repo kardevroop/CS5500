@@ -1,5 +1,17 @@
 /**
- * @file Implements the app server with all DAO and controller instances
+ * @file Implements an Express Node HTTP server. Declares RESTful Web services
+ * enabling CRUD operations on the following resources:
+ * <ul>
+ *     <li>users</li>
+ *     <li>tuits</li>
+ *     <li>likes</li>
+ *      <li>bookarks</li>
+ *      <li>follows</li>
+ *      <li>messages</li>
+ * </ul>
+ * 
+ * Connects to a remote MongoDB instance hosted on the Atlas cloud database
+ * service
  */
 
 import express, {Request, Response} from 'express';
