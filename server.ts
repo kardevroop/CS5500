@@ -31,14 +31,77 @@ import LikeController from "./controllers/LikeController";
 import BookmarkController from "./controllers/BookmarkController";
 import FollowsController from "./controllers/FollowsController";
 import MessageController from "./controllers/MessageController";
+import AuthenticationController from "./controllers/AuthController";
 import UserDao from './daos/UserDao';
 import TuitDao from './daos/TuitDao';
+const session = require("express-session");
+var cors = require('cors');
 const app = express();
+app.use(express.json());
+/*const corsOptions ={
+    origin:'*', 
+    credentials:true,            //access-control-allow-credentials:true
+    optionSuccessStatus:200,
+ }*/
+app.use(cors());
+/*
+app.use(cors({
+    credentials: true,
+    origin: 'http://localhost:3000'
+ }));
+ */
 
+/*app.use((req, res, next) => {
+    const allowedOrigins = ['http://localhost:3000'];
+    const origin = req.headers.origin;
+    if (allowedOrigins.includes(origin)) {
+         res.setHeader('Access-Control-Allow-Origin', origin);
+    }
+    //res.header('Access-Control-Allow-Origin', 'http://127.0.0.1:8020');
+    res.header('Access-Control-Allow-Methods', 'GET, OPTIONS');
+    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    res.header('Access-Control-Allow-Credentials', 'true');
+    return next();
+  });
+*/
+require('dotenv').config();
+/*
+app.set('trust proxy', 1);
+app.use(session({
+   secret: process.env.SECRET,
+   resave: false,
+   saveUninitialized: true,
+   cookie: { secure: true } // needs HTTPS
+}));
+
+
+let sess = {
+    secret: process.env.SECRET,
+    cookie: {
+        secure: false
+    }
+ }
+
+ app.use(session(sess));
+
+console.log(process.env.ENV)
+if (process.env.ENV === 'PRODUCTION') {
+    app.set('trust proxy', 1) // trust first proxy
+    sess.cookie.secure = true // serve secure cookies
+    app.use(session(sess));
+     
+ }
+ 
+AuthenticationController(app);
+*/
 const userDao = UserDao.getInstance();
 const tuitDao = TuitDao.getInstance();
-
-app.use(bodyParser.json())
+/*
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({
+extended: true
+}));
+*/
 
 app.get('/hello', (req: Request, res: Response) =>
     res.send('Hello World!'));

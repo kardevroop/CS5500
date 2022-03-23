@@ -6,8 +6,8 @@ import Location from "./Location";
  * @class Class to represent an user.
  */
 export default class User {
-   private username: string = '';
-   private password: string = '';
+   username: string = '';
+   password: string = '';
    private firstName: string | null = null;
    private lastName: string | null = null;
    private email: string = '';

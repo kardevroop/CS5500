@@ -56,9 +56,8 @@ export default class TuitDao implements TuitDao {
      * Translates HTTP request to a Database script to create a tuit.
      * @returns The new tuit wrapped in a promise.
      */
-   async createTuit(tuit: Tuit): Promise<Tuit> {
-       return await TuitModel.create(tuit);
-   }
+    createTuitByUser = async (uid: string, tuit: Tuit): Promise<Tuit> =>
+        TuitModel.create({...tuit, postedBy: uid});
 
    /**
      * Translates HTTP request to a Database script to update a tuit.
@@ -75,4 +74,7 @@ export default class TuitDao implements TuitDao {
    async deleteTuit(tid: string):  Promise<any> {
        return await TuitModel.deleteOne({_id: tid});
    }
+
+   deleteTuitByText = async (text: string): Promise<any> =>
+   TuitModel.deleteOne({tuit: text});
 }
