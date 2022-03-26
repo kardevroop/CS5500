@@ -43,13 +43,13 @@ app.use(express.json());
     credentials:true,            //access-control-allow-credentials:true
     optionSuccessStatus:200,
  }*/
-app.use(cors());
-/*
+//app.use(cors());
+
 app.use(cors({
     credentials: true,
     origin: 'http://localhost:3000'
  }));
- */
+ 
 
 /*app.use((req, res, next) => {
     const allowedOrigins = ['http://localhost:3000'];
@@ -74,7 +74,7 @@ app.use(session({
    cookie: { secure: true } // needs HTTPS
 }));
 
-
+*/
 let sess = {
     secret: process.env.SECRET,
     cookie: {
@@ -93,15 +93,15 @@ if (process.env.ENV === 'PRODUCTION') {
  }
  
 AuthenticationController(app);
-*/
+
 const userDao = UserDao.getInstance();
 const tuitDao = TuitDao.getInstance();
-/*
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
 extended: true
 }));
-*/
+
 
 app.get('/hello', (req: Request, res: Response) =>
     res.send('Hello World!'));

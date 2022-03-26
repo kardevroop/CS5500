@@ -83,22 +83,32 @@ export default class TuitController implements TuitControllerI {
      * @param {Response} res Response object to capture the returned Id.
      * @returns The concerned tuit.
      */
-   findTuitsByUser = (req: Request, res: Response) =>
-      this.tuitDao.findTuitsByUser(req.params.uid)
+   findTuitsByUser = (req: any, res: Response) => {
+       var userId = req.params.uid === "me"
+       && req.session['profile'] ?
+       req.session['profile']._id :
+       req.params.uid;
+      return this.tuitDao.findTuitsByUser(userId)
            .then(tuits => res.json(tuits));
+   }
     /**
      * Create a new tuit.
      * @param {Request} req POST request to create new tuit.
      * @param {Response} res Response object to capture the new tuit.
      * @returns The tuit.
      */
-     createTuitByUser = (req: Request, res: Response) => 
-     this.tuitDao.createTuitByUser(req.params.uid, req.body)
+     createTuitByUser = (req: any, res: Response) => {
+        var userId = req.params.uid === "me"
+        && req.session['profile'] ?
+        req.session['profile']._id :
+        req.params.uid;
+
+     return this.tuitDao.createTuitByUser(userId, req.body)
            .then(tuit => {
                //console.log("Create Tuit");
                return res.json(tuit);
             });
-    
+        }
     /**
      * Delete a tuit based on Id.
      * @param {Request} req DELETE request based on Id.
