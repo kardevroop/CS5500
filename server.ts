@@ -28,6 +28,7 @@ import bodyParser from "body-parser";
 import UserController from "./controllers/UserController";
 import TuitController from "./controllers/TuitController";
 import LikeController from "./controllers/LikeController";
+import DislikeController from "./controllers/DislikeController";
 import BookmarkController from "./controllers/BookmarkController";
 import FollowsController from "./controllers/FollowsController";
 import MessageController from "./controllers/MessageController";
@@ -115,6 +116,7 @@ app.get('/add/:a/:b', (req: Request, res: Response) =>
 const userController = UserController.getInstance(app);
 const tuitController = TuitController.getInstance(app);
 const likeController = LikeController.getInstance(app);
+const dislikeController = DislikeController.getInstance(app);
 const bookmarkController = BookmarkController.getInstance(app);
 const messageController = MessageController.getInstance(app);
 const followsController = FollowsController.getInstance(app);
