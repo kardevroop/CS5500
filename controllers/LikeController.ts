@@ -69,7 +69,7 @@ import TuitDao from "../daos/TuitDao";
         const uid = req.params.uid;
         // @ts-ignore
         const profile = req.session['profile'];
-        console.log(profile);
+        //console.log(profile);
         const userId = uid === "me" && profile ?
             profile._id : uid;
          LikeController.likeDao.findAllTuitsLikedByUser(userId)
