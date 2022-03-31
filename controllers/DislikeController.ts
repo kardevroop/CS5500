@@ -1,5 +1,5 @@
 /**
- * @file Controller RESTful Web service API for likes resource
+ * @file Controller RESTful Web service API for dislikes resource
  */
  import {Express, Request, Response} from "express";
  import DislikeDao from "../daos/DislikeDao";
@@ -7,17 +7,19 @@ import TuitDao from "../daos/TuitDao";
  import DislikeControllerI from "../interfaces/DislikeControllerI";
  
  /**
-  * @class TuitController Implements RESTful Web service API for likes resource.
+  * @class DislikeController Implements RESTful Web service API for likes resource.
   * Defines the following HTTP endpoints:
   * <ul>
-  *     <li>GET /api/users/:uid/likes to retrieve all the tuits liked by a user
+  *     <li>GET /api/users/:uid/dislikes to retrieve all the tuits liked by a user
   *     </li>
-  *     <li>GET /api/tuits/:tid/likes to retrieve all users that liked a tuit
+  *     <li>GET /api/tuits/:tid/dislikes to retrieve all users that liked a tuit
   *     </li>
-  *     <li>POST /api/users/:uid/likes/:tid to record that a user likes a tuit
+  *     <li>POST /api/users/:uid/dislikes/:tid to record that a user likes a tuit
   *     </li>
-  *     <li>DELETE /api/users/:uid/unlikes/:tid to record that a user
+  *     <li>DELETE /api/users/:uid/undo/:tid to record that a user
   *     no londer likes a tuit</li>
+  *     <li>PUT /api/users/:uid/dislikes/:tid to change toggle status of a tuit
+  *     disliked by a user</li>
   * </ul>
   * @property {DislikeDao} dislikeDao Singleton DAO implementing dislikes CRUD operations
   * @property {DislikeController} DislikeController Singleton controller implementing
@@ -48,9 +50,9 @@ import TuitDao from "../daos/TuitDao";
      private constructor() {}
  
      /**
-      * Retrieves all users that liked a tuit from the database
+      * Retrieves all users that disliked a tuit from the database
       * @param {Request} req Represents request from client, including the path
-      * parameter tid representing the liked tuit
+      * parameter tid representing the disliked tuit
       * @param {Response} res Represents response to client, including the
       * body formatted as JSON arrays containing the user objects
       */
@@ -59,22 +61,33 @@ import TuitDao from "../daos/TuitDao";
              .then(likes => res.json(likes));
  
      /**
-      * Retrieves all tuits liked by a user from the database
+      * Retrieves all tuits disliked by a user from the database
       * @param {Request} req Represents request from client, including the path
-      * parameter uid representing the user liked the tuits
+      * parameter uid representing the user who disliked the tuits
       * @param {Response} res Represents response to client, including the
       * body formatted as JSON arrays containing the tuit objects that were liked
       */
-      findAllTuitsDislikedByUser = (req: Request, res: Response) =>
-      DislikeController.dislikeDao.findAllTuitsDislikedByUser(req.params.uid)
-             .then(likes => res.json(likes));
+      findAllTuitsDislikedByUser = (req: Request, res: Response) => {
+        const uid = req.params.uid;
+        // @ts-ignore
+        const profile = req.session['profile'];
+        //console.log(profile);
+        const userId = uid === "me" && profile ?
+            profile._id : uid;
+        DislikeController.dislikeDao.findAllTuitsDislikedByUser(userId)
+             .then(likes => {
+                const dislikesNonNullTuits = likes.filter(like => like.tuit);
+                const tuitsFromDislikes = dislikesNonNullTuits.map(like => like.tuit);
+                 res.json(tuitsFromDislikes);
+             });
+      }
  
      /**
       * @param {Request} req Represents request from client, including the
-      * path parameters uid and tid representing the user that is liking the tuit
-      * and the tuit being liked
+      * path parameters uid and tid representing the user that is disliking the tuit
+      * and the tuit being disliked
       * @param {Response} res Represents response to client, including the
-      * body formatted as JSON containing the new likes that was inserted in the
+      * body formatted as JSON containing the new dislikes that was inserted in the
       * database
       */
       userDislikesTuit = (req: Request, res: Response) =>
@@ -83,15 +96,23 @@ import TuitDao from "../daos/TuitDao";
  
      /**
       * @param {Request} req Represents request from client, including the
-      * path parameters uid and tid representing the user that is unliking
-      * the tuit and the tuit being unliked
+      * path parameters uid and tid representing the user that is undoing a dislike
+      * and the disliked tuit
       * @param {Response} res Represents response to client, including status
-      * on whether deleting the like was successful or not
+      * on whether deleting the dislike was successful or not
       */
       userUndoDislikes = (req: Request, res: Response) =>
          DislikeController.dislikeDao.userUndoDislikes(req.params.uid, req.params.tid)
              .then(status => res.send(status));
 
+    /**
+     * Toogles dislike status of a tuit
+      * @param {Request} req Represents request from client, including the
+      * path parameters uid and tid representing the user that is disliking
+      * the tuit and the tuit being disliked
+      * @param {Response} res Represents response to client, including status
+      * on whether deleting the dislike was successful or not
+      */
     userTogglesTuitDislikes = async (req: any, res: Response) => {
     const uid = req.params.uid;
     const tid = req.params.tid;

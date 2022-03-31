@@ -22,6 +22,12 @@ export default class DislikeDao implements DislikeDaoI {
     }
     private constructor() {}
 
+    /**
+     * Retrieve the user who disliked te tuit
+     * @param uid the id of the user
+     * @param tid the id of the tuit
+     * @returns the record
+     */
     findUserDislikesTuit = async (uid: string, tid: string) =>
     DislikeModel.findOne(
       {tuit: tid, dislikedBy: uid});
@@ -40,7 +46,7 @@ export default class DislikeDao implements DislikeDaoI {
             .exec();
 
     /**
-     * Retrieve all tuits liked by a user
+     * Retrieve all tuits disliked by a user
      * @param uid The user id
      * @returns Promise containing a list of tuits
      */
@@ -51,11 +57,16 @@ export default class DislikeDao implements DislikeDaoI {
             .populate("dislikedBy")
             .exec();
 
+    /**
+     * Return count of users who disliked the tuit
+     * @param tid the id of the user
+     * @returns the count
+     */
     countHowManyDislikedTuit = async (tid: string) =>
         DislikeModel.count({tuit: tid});
 
     /**
-     * Like a tuit
+     * Dislike a tuit
      * @param uid The user
      * @param tid The tuit
      * @returns primise containing the creation details
@@ -64,7 +75,7 @@ export default class DislikeDao implements DislikeDaoI {
         DislikeModel.create({tuit: tid, dislikedBy: uid});
 
     /**
-     * Unlike a tuit
+     * Undo the dislike of a tuit
      * @param uid the user
      * @param tid the tuit
      * @returns The deletion status
