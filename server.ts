@@ -76,6 +76,8 @@ app.use(session({
 }));
 
 */
+
+/*
 let sess = {
     secret: process.env.SECRET,
     cookie: {
@@ -92,6 +94,22 @@ if (process.env.ENV === 'PRODUCTION') {
     app.use(session(sess));
      
  }
+ */
+
+ let sess = {
+    secret: process.env.SECRET,
+    saveUninitialized: true,
+    resave: true,
+    cookie: {
+        sameSite: process.env.NODE_ENV === "production" ? 'none' : 'lax',
+        secure: process.env.NODE_ENV === "production",
+    }
+}
+
+if (process.env.NODE_ENV === 'production') {
+    app.set('trust proxy', 1) // trust first proxy
+}
+app.use(session(sess))
  
 AuthenticationController(app);
 

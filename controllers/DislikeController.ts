@@ -65,9 +65,20 @@ import TuitDao from "../daos/TuitDao";
       * @param {Response} res Represents response to client, including the
       * body formatted as JSON arrays containing the tuit objects that were liked
       */
-      findAllTuitsDislikedByUser = (req: Request, res: Response) =>
-      DislikeController.dislikeDao.findAllTuitsDislikedByUser(req.params.uid)
-             .then(likes => res.json(likes));
+      findAllTuitsDislikedByUser = (req: Request, res: Response) => {
+        const uid = req.params.uid;
+        // @ts-ignore
+        const profile = req.session['profile'];
+        console.log(profile);
+        const userId = uid === "me" && profile ?
+            profile._id : uid;
+        DislikeController.dislikeDao.findAllTuitsDislikedByUser(userId)
+             .then(likes => {
+                const dislikesNonNullTuits = likes.filter(like => like.tuit);
+                const tuitsFromDislikes = dislikesNonNullTuits.map(like => like.tuit);
+                 res.json(tuitsFromDislikes);
+             });
+      }
  
      /**
       * @param {Request} req Represents request from client, including the

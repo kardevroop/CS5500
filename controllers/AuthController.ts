@@ -59,9 +59,9 @@ const AuthenticationController = (app: Express) => {
   app.post("/api/auth/login", login);
 
   const profile = (req: any, res: any) => {
-    console.log(req.session['profile']);
+    //console.log(req.session['profile']);
     const profile = req.session['profile'];
-    console.log(profile);
+    //console.log(profile);
     if (profile) {
       profile.password = "";
       res.json(profile);
