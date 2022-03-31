@@ -7,7 +7,7 @@ import TuitDao from "../daos/TuitDao";
  import LikeControllerI from "../interfaces/LikeControllerI";
  
  /**
-  * @class TuitController Implements RESTful Web service API for likes resource.
+  * @class LikeController Implements RESTful Web service API for likes resource.
   * Defines the following HTTP endpoints:
   * <ul>
   *     <li>GET /api/users/:uid/likes to retrieve all the tuits liked by a user
@@ -18,6 +18,8 @@ import TuitDao from "../daos/TuitDao";
   *     </li>
   *     <li>DELETE /api/users/:uid/unlikes/:tid to record that a user
   *     no londer likes a tuit</li>
+  *     <li>PUT /api/users/:uid/likes/:tid to change toggle status of a tuit
+  *     liked by a user</li>
   * </ul>
   * @property {LikeDao} likeDao Singleton DAO implementing likes CRUD operations
   * @property {LikeController} LikeController Singleton controller implementing
@@ -104,6 +106,14 @@ import TuitDao from "../daos/TuitDao";
          LikeController.likeDao.userUnlikesTuit(req.params.uid, req.params.tid)
              .then(status => res.send(status));
 
+    /**
+     * Toogles like status of a tuit
+      * @param {Request} req Represents request from client, including the
+      * path parameters uid and tid representing the user that is liking
+      * the tuit and the tuit being liked
+      * @param {Response} res Represents response to client, including status
+      * on whether deleting the like was successful or not
+      */
     userTogglesTuitLikes = async (req: any, res: Response) => {
     const uid = req.params.uid;
     const tid = req.params.tid;

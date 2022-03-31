@@ -22,6 +22,13 @@ export default class LikeDao implements LikeDaoI {
     }
     private constructor() {}
 
+
+    /**
+     * Retrieve the user who liked te tuit
+     * @param uid the id of the user
+     * @param tid the id of the tuit
+     * @returns the record
+     */
     findUserLikesTuit = async (uid: string, tid: string) =>
     LikeModel.findOne(
       {tuit: tid, likedBy: uid});
@@ -51,6 +58,11 @@ export default class LikeDao implements LikeDaoI {
             .populate("likedBy")
             .exec();
 
+    /**
+     * Return count of users who liked the tuit
+     * @param tid the id of the user
+     * @returns the count
+     */
     countHowManyLikedTuit = async (tid: string) =>
         LikeModel.count({tuit: tid});
 
